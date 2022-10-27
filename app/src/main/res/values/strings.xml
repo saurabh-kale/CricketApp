@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cricket App</string>
+    <string name="matches">Matches</string>
 </resources>
