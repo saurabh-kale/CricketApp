@@ -28,13 +28,13 @@ data class Innings(
     @SerializedName("AllottedOvers")
     val allotted_overs: String,
     @SerializedName("Batsmen")
-    val batsmen: Batsmen,
+    val batsmen: ArrayList<Batsmen>,
     @SerializedName("Partnership_current")
     val partnershipCurrent: PartnershipCurrent,
     @SerializedName("Bowlers")
-    val bowlers: Bowlers,
+    val bowlers: ArrayList<Bowlers>,
     @SerializedName("FallofWickets")
-    val fallOfWickets: FallOfWickets,
+    val fallOfWickets: ArrayList<FallOfWickets>,
     @SerializedName("PowerPlay")
     val powerPlay: PowerPlay
 )

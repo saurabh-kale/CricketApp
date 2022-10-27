@@ -2,11 +2,13 @@ package com.example.cricketapp.api
 
 import androidx.databinding.library.BuildConfig
 import com.example.cricketapp.api.network.CoroutineAdapterFactory
+import com.example.cricketapp.data.MatchDetailsData
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 
 val requestInterceptor = Interceptor { chain ->
@@ -48,13 +50,18 @@ val okHttpClient = provideOkHttpClient(httpLogging)
 
 private val retrofit = Retrofit.Builder()
     .client(okHttpClient)
-//    .baseUrl(AppData.URL)
+    .baseUrl("https://demo.sportz.io/")
     .addCallAdapterFactory(CoroutineAdapterFactory())
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
 interface APIService {
+    //get profile image url
+    @GET("nzin01312019187360.json")
+    suspend fun getMatchDetailsAPI1(): MatchDetailsData
 
+    @GET("sapk01222019186652.json")
+    suspend fun getMatchDetailsAPI2(): MatchDetailsData
 }
 
 object CricketAPPAPI {
