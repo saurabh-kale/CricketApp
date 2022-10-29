@@ -6,11 +6,14 @@ import com.example.cricketapp.databinding.ActivityTeamStatsBinding
 
 class TeamStats : AppCompatActivity() {
     private lateinit var binding: ActivityTeamStatsBinding
+    lateinit var viewModel: TeamStatsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTeamStatsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = TeamStatsViewModel()
+        binding.lifecycleOwner = this
 
     }
 }
