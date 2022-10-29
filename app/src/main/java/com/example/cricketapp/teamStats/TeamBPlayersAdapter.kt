@@ -1,6 +1,5 @@
 package com.example.cricketapp.teamStats
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import com.example.cricketapp.R
 import com.example.cricketapp.data.PlayerData
 import com.example.cricketapp.databinding.TeamPlayersLayout2Binding
 
-class TeamBPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TeamBPlayersAdapter(var callBack : ShowInformation) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var teamList: ArrayList<PlayerData> = ArrayList()
     var teamAName: String = ""
     private val TAG = "TeamBPlayersAdapter"
@@ -21,7 +20,7 @@ class TeamBPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class TeamBPlayersAdapterViewHolder(private val binding: TeamPlayersLayout2Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: PlayerData, position: Int, teamAName: String) {
+        fun bind(data: PlayerData, position: Int, teamAName: String, callBack: ShowInformation) {
             binding.playerNameText.text = data.name_full
             when (teamAName.lowercase()) {
                 "india" -> binding.teamLogo.setImageResource(R.drawable.india_logo)
@@ -39,6 +38,10 @@ class TeamBPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 binding.playerWcCard.visibility = View.VISIBLE
             } else {
                 binding.playerWcCard.visibility = View.GONE
+            }
+
+            binding.mainConstraint.setOnClickListener {
+                callBack.showPlayerDetails(data)
             }
         }
 
@@ -59,7 +62,7 @@ class TeamBPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = teamList[position]
         holder as TeamBPlayersAdapterViewHolder
-        holder.bind(data, position, teamAName)
+        holder.bind(data, position, teamAName,callBack)
     }
 
     override fun getItemCount(): Int {
@@ -75,5 +78,10 @@ class TeamBPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun setTeamName(value: String) {
         teamAName = value
     }
+
+    interface ShowInformation {
+        fun showPlayerDetails(data: PlayerData)
+    }
+
 
 }

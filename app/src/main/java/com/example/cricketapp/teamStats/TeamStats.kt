@@ -1,13 +1,20 @@
 package com.example.cricketapp.teamStats
 
+import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cricketapp.R
 import com.example.cricketapp.data.MatchDetailsData
+import com.example.cricketapp.data.PlayerData
 import com.example.cricketapp.databinding.ActivityTeamStatsBinding
 import com.google.gson.Gson
 
@@ -44,10 +51,18 @@ class TeamStats : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         viewModel.setMatchDetailsData(data)
 
 
-        _teamAPlayersAdapter = TeamAPlayersAdapter()
+        _teamAPlayersAdapter = TeamAPlayersAdapter(object : TeamAPlayersAdapter.ShowInformation {
+            override fun showPlayerDetails(data: PlayerData) {
+                showAlertDialog(data)
+            }
+        })
         binding.teamAPlayersRecycler.adapter = teamAPlayersAdapter
 
-        _teamBPlayersAdapter = TeamBPlayersAdapter()
+        _teamBPlayersAdapter = TeamBPlayersAdapter(object : TeamBPlayersAdapter.ShowInformation {
+            override fun showPlayerDetails(data: PlayerData) {
+                showAlertDialog(data)
+            }
+        })
         binding.teamBPlayersRecycler.adapter = teamBPlayersAdapter
         /**
          *         observe [viewModel.matchDetailsData] to update UI when data is available.
@@ -76,6 +91,7 @@ class TeamStats : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         viewModel.teamAPlayersData.observe(this) {
+            Log.d(TAG, "teamAPlayersData: ${it.size}")
 //            Log.d(TAG, "teamAPlayersData: ${Gson().toJson(it)}")
             if (!it.isNullOrEmpty()) {
                 teamAPlayersAdapter.setData(it)
@@ -88,6 +104,7 @@ class TeamStats : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
 
         viewModel.teamBPlayersData.observe(this) {
+            Log.d(TAG, "teamBPlayersData: ${it.size}")
 //            Log.d(TAG, "teamBPlayersData: ${Gson().toJson(it)}")
             if (!it.isNullOrEmpty()) {
                 teamBPlayersAdapter.setData(it)
@@ -115,6 +132,54 @@ class TeamStats : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             binding.filtersSpinner.adapter = adapter
         }
 
+    }
+
+    fun showAlertDialog(data: PlayerData) {
+
+        val factory = LayoutInflater.from(this)
+        val dialogView: View = factory.inflate(R.layout.show_player_details, null)
+        val dialog = AlertDialog.Builder(this).create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setView(dialogView)
+        dialog.setCancelable(true)
+
+        dialogView.findViewById<TextView>(R.id.player_name_text_view).text = data.name_full
+
+        dialogView.findViewById<TextView>(R.id.player_position).text = "Position : " + data.position
+
+        dialogView.findViewById<TextView>(R.id.batting_style).text =
+            getString(com.example.cricketapp.R.string.style, data.battingDetails.style)
+
+        dialogView.findViewById<TextView>(R.id.batting_average).text =
+            getString(com.example.cricketapp.R.string.average, data.battingDetails.average)
+
+        dialogView.findViewById<TextView>(R.id.batting_strike_rate).text =
+            getString(com.example.cricketapp.R.string.strike_rate, data.battingDetails.strike_rate)
+
+        dialogView.findViewById<TextView>(R.id.batting_runs).text =
+            getString(com.example.cricketapp.R.string.runs, data.battingDetails.runs)
+
+        dialogView.findViewById<TextView>(R.id.bowling_style).text =
+            getString(com.example.cricketapp.R.string.style, data.playerBowlingDetails.style)
+
+        dialogView.findViewById<TextView>(R.id.bowling_average).text =
+            getString(com.example.cricketapp.R.string.average, data.playerBowlingDetails.average)
+
+        dialogView.findViewById<TextView>(R.id.bowling_economy_rate).text =
+            getString(
+                com.example.cricketapp.R.string.economy_rate,
+                data.playerBowlingDetails.economy_rate
+            )
+
+        dialogView.findViewById<TextView>(R.id.bowling_wickets).text =
+            getString(com.example.cricketapp.R.string.wickets, data.playerBowlingDetails.wickets)
+
+
+        dialogView.findViewById<TextView>(R.id.close_button).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     // this event will enable the back

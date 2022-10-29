@@ -1,5 +1,6 @@
 package com.example.cricketapp.teamStats
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,11 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cricketapp.R
 import com.example.cricketapp.data.PlayerData
 import com.example.cricketapp.databinding.TeamPlayersLayout1Binding
+import com.google.gson.Gson
 
-class TeamAPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TeamAPlayersAdapter(val callback: ShowInformation) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var teamList: ArrayList<PlayerData> = ArrayList()
     var teamAName: String = ""
 
+    private val TAG = "TeamAPlayersAdapter"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return TeamAPlayersAdapterViewHolder.from(parent)
     }
@@ -19,7 +23,8 @@ class TeamAPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class TeamAPlayersAdapterViewHolder(private val binding: TeamPlayersLayout1Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: PlayerData, position: Int, teamAName: String) {
+        fun bind(data: PlayerData, position: Int, teamAName: String, callback: ShowInformation) {
+
             binding.playerNameText.text = data.name_full
             when (teamAName.lowercase()) {
                 "india" -> binding.teamLogo.setImageResource(R.drawable.india_logo)
@@ -38,6 +43,11 @@ class TeamAPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             } else {
                 binding.playerWcCard.visibility = View.GONE
             }
+
+            binding.mainConstraint.setOnClickListener {
+                callback.showPlayerDetails(data)
+            }
+
         }
 
         companion object {
@@ -57,7 +67,7 @@ class TeamAPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = teamList[position]
         holder as TeamAPlayersAdapterViewHolder
-        holder.bind(data, position, teamAName)
+        holder.bind(data, position, teamAName, callback)
     }
 
     override fun getItemCount(): Int {
@@ -72,6 +82,10 @@ class TeamAPlayersAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun setTeamName(value: String) {
         teamAName = value
+    }
+
+    interface ShowInformation {
+        fun showPlayerDetails(data: PlayerData)
     }
 
 }
