@@ -1,6 +1,5 @@
 package com.example.cricketapp.teamStats
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cricketapp.R
 import com.example.cricketapp.data.PlayerData
 import com.example.cricketapp.databinding.TeamPlayersLayout1Binding
-import com.google.gson.Gson
 
-class TeamAPlayersAdapter(val callback: ShowInformation) :
+class TeamAPlayersAdapter(private val callback: ShowInformation) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var teamList: ArrayList<PlayerData> = ArrayList()
-    var teamAName: String = ""
+    private var teamList: ArrayList<PlayerData> = ArrayList()
+    private var teamAName: String = ""
 
     private val TAG = "TeamAPlayersAdapter"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -23,7 +21,7 @@ class TeamAPlayersAdapter(val callback: ShowInformation) :
     class TeamAPlayersAdapterViewHolder(private val binding: TeamPlayersLayout1Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: PlayerData, position: Int, teamAName: String, callback: ShowInformation) {
+        fun bind(data: PlayerData, teamAName: String, callback: ShowInformation) {
 
             binding.playerNameText.text = data.name_full
             when (teamAName.lowercase()) {
@@ -52,7 +50,7 @@ class TeamAPlayersAdapter(val callback: ShowInformation) :
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-                return TeamAPlayersAdapter.TeamAPlayersAdapterViewHolder(
+                return TeamAPlayersAdapterViewHolder(
                     TeamPlayersLayout1Binding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
@@ -67,7 +65,7 @@ class TeamAPlayersAdapter(val callback: ShowInformation) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = teamList[position]
         holder as TeamAPlayersAdapterViewHolder
-        holder.bind(data, position, teamAName, callback)
+        holder.bind(data, teamAName, callback)
     }
 
     override fun getItemCount(): Int {

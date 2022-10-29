@@ -30,7 +30,6 @@ class MainActivityViewModel : ViewModel() {
 
     private val TAG = "MainActivityViewModel"
 
-
     private fun addMonthData() {
         monthData[1] = "Jan"
         monthData[2] = "Feb"
@@ -46,6 +45,7 @@ class MainActivityViewModel : ViewModel() {
         monthData[12] = "Dec"
     }
 
+    // get match details API 1
     fun getMatchDetailsAPI1() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -87,6 +87,7 @@ class MainActivityViewModel : ViewModel() {
         return matchesListData
     }
 
+    // get match details API 2
     fun getMatchDetailsAPI2() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

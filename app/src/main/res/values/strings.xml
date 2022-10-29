@@ -13,6 +13,8 @@
     <string name="economy_rate">Economy Rate : %s</string>
     <string name="wickets">Wickets : %s</string>
     <string name="close">Close</string>
+    <string name="player_name">%s</string>
+    <string name="player_position">Position : %s</string>
     <string-array name="filter_option">
         <item>All Teams</item>
         <item>Team A</item>

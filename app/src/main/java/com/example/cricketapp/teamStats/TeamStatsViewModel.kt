@@ -33,15 +33,15 @@ class TeamStatsViewModel : ViewModel() {
     fun setTeamAPlayersData() {
         val playersList: ArrayList<PlayerData> = ArrayList()
         _matchDetailsData.value?.matchDetail?.let {
-            _matchDetailsData.value?.teamData?.get(it.team_home)?.players?.values?.forEach { it ->
+            _matchDetailsData.value?.teamData?.get(it.team_home)?.players?.values?.forEach { playerData ->
                 playersList.add(
                     PlayerData(
-                        position = it.position,
-                        name_full = it.name_full,
-                        isKeeper = it.isKeeper,
-                        isCaptain = it.isCaptain,
-                        battingDetails = it.battingDetails,
-                        playerBowlingDetails = it.playerBowlingDetails
+                        position = playerData.position,
+                        name_full = playerData.name_full,
+                        isKeeper = playerData.isKeeper,
+                        isCaptain = playerData.isCaptain,
+                        battingDetails = playerData.battingDetails,
+                        playerBowlingDetails = playerData.playerBowlingDetails
                     )
                 )
             }
@@ -53,15 +53,15 @@ class TeamStatsViewModel : ViewModel() {
     fun setTeamBPlayersData() {
         val playersList: ArrayList<PlayerData> = ArrayList()
         _matchDetailsData.value?.matchDetail?.let {
-            _matchDetailsData.value?.teamData?.get(it.team_away)?.players?.values?.forEach { it ->
+            _matchDetailsData.value?.teamData?.get(it.team_away)?.players?.values?.forEach { playerData ->
                 playersList.add(
                     PlayerData(
-                        position = it.position,
-                        name_full = it.name_full,
-                        isKeeper = it.isKeeper,
-                        isCaptain = it.isCaptain,
-                        battingDetails = it.battingDetails,
-                        playerBowlingDetails = it.playerBowlingDetails
+                        position = playerData.position,
+                        name_full = playerData.name_full,
+                        isKeeper = playerData.isKeeper,
+                        isCaptain = playerData.isCaptain,
+                        battingDetails = playerData.battingDetails,
+                        playerBowlingDetails = playerData.playerBowlingDetails
                     )
                 )
             }
@@ -69,6 +69,5 @@ class TeamStatsViewModel : ViewModel() {
         _teamBPlayersData.value = ArrayList()
         _teamBPlayersData.postValue(playersList)
     }
-
 
 }

@@ -33,17 +33,22 @@ class MainActivity : AppCompatActivity() {
         // initialize view model
         viewModel = MainActivityViewModel()
 
+        // get match details API
         viewModel.getMatchDetailsAPI1()
         viewModel.getMatchDetailsAPI2()
 
+        // initialize adapter.
         _adapter = MatchesListAdapter(object : MatchesListAdapter.NavigateInterface {
             override fun navigate(position: Int) {
                 val intent = Intent(this@MainActivity, TeamStats::class.java)
+                // get selected match details data.
                 val data = viewModel.matchDetails.value?.get(position)
 
+                // pass selected match details data to next activity via bundle.
                 val bundle = Bundle()
                 bundle.putString("data", Gson().toJson(data))
                 intent.putExtras(bundle)
+                // start Team statistics activity
                 startActivity(intent)
             }
 
@@ -53,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.matchDetails.observe(this) { matchDetailsList ->
             if (!matchDetailsList.isNullOrEmpty()) {
+                // get matches list data to set in Adapter from the matchDetails data
                 adapter.setData(viewModel.getMatchesListData())
             }
         }
@@ -60,4 +66,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _adapter = null
+    }
 }

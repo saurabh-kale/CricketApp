@@ -8,9 +8,10 @@ import com.example.cricketapp.R
 import com.example.cricketapp.data.PlayerData
 import com.example.cricketapp.databinding.TeamPlayersLayout2Binding
 
-class TeamBPlayersAdapter(var callBack : ShowInformation) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var teamList: ArrayList<PlayerData> = ArrayList()
-    var teamAName: String = ""
+class TeamBPlayersAdapter(private var callBack: ShowInformation) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var teamList: ArrayList<PlayerData> = ArrayList()
+    private var teamAName: String = ""
     private val TAG = "TeamBPlayersAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -20,7 +21,7 @@ class TeamBPlayersAdapter(var callBack : ShowInformation) : RecyclerView.Adapter
     class TeamBPlayersAdapterViewHolder(private val binding: TeamPlayersLayout2Binding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: PlayerData, position: Int, teamAName: String, callBack: ShowInformation) {
+        fun bind(data: PlayerData, teamAName: String, callBack: ShowInformation) {
             binding.playerNameText.text = data.name_full
             when (teamAName.lowercase()) {
                 "india" -> binding.teamLogo.setImageResource(R.drawable.india_logo)
@@ -47,7 +48,7 @@ class TeamBPlayersAdapter(var callBack : ShowInformation) : RecyclerView.Adapter
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-                return TeamBPlayersAdapter.TeamBPlayersAdapterViewHolder(
+                return TeamBPlayersAdapterViewHolder(
                     TeamPlayersLayout2Binding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
@@ -62,7 +63,7 @@ class TeamBPlayersAdapter(var callBack : ShowInformation) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = teamList[position]
         holder as TeamBPlayersAdapterViewHolder
-        holder.bind(data, position, teamAName,callBack)
+        holder.bind(data, teamAName, callBack)
     }
 
     override fun getItemCount(): Int {
