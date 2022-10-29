@@ -1,4 +1,4 @@
-package com.example.cricketapp
+package com.example.cricketapp.mainActivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +14,10 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
 
+    private var _adapter: MatchesListAdapter? = null
+    private val adapter get() = _adapter!!
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // bind layout file to MainActivity
@@ -27,9 +31,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.getMatchDetailsAPI1()
         viewModel.getMatchDetailsAPI2()
 
-        viewModel.matchDetails.observe(this) {
-            if (!it.isNullOrEmpty()) {
-                Log.d(TAG, "onCreate: $it")
+        _adapter = MatchesListAdapter()
+        binding.recyclerView.adapter = adapter
+
+
+        viewModel.matchDetails.observe(this) { matchDetailsList ->
+            if (!matchDetailsList.isNullOrEmpty()) {
+                adapter.setData(viewModel.getMatchesListData())
             }
         }
 
