@@ -1,9 +1,14 @@
 package com.example.cricketapp.mainActivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.cricketapp.data.MatchDetailsData
 import com.example.cricketapp.databinding.ActivityMainBinding
+import com.example.cricketapp.teamStats.TeamStats
+import com.google.gson.Gson
+import java.io.Serializable
 
 class MainActivity : AppCompatActivity() {
     // binding declaration
@@ -31,7 +36,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.getMatchDetailsAPI1()
         viewModel.getMatchDetailsAPI2()
 
-        _adapter = MatchesListAdapter()
+        _adapter = MatchesListAdapter(object : MatchesListAdapter.NavigateInterface {
+            override fun navigate(position: Int) {
+                val intent = Intent(this@MainActivity, TeamStats::class.java)
+                val data = viewModel.matchDetails.value?.get(position)
+
+                val bundle = Bundle()
+                bundle.putString("data", Gson().toJson(data))
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+
+        })
         binding.recyclerView.adapter = adapter
 
 

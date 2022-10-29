@@ -1,7 +1,9 @@
 package com.example.cricketapp.data
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PlayerBattingDetails(
     @SerializedName("Style")
     val style : String,

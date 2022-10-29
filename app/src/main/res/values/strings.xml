@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Cricket App</string>
     <string name="matches">Matches</string>
-    <string name="title_activity_team_stats">TeamStats</string>
+    <string name="title_activity_team_stats">Team Statistics</string>
+    <string name="captain">C</string>
+    <string name="wicket_keeper">WK</string>
+    <string-array name="filter_option">
+        <item>All Teams</item>
+        <item>Team A</item>
+        <item>Team B</item>
+    </string-array>
 </resources>

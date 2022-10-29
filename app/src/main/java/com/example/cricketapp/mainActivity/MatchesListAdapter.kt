@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cricketapp.R
 import com.example.cricketapp.databinding.MatchesLayoutBinding
 
-class MatchesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MatchesListAdapter(val callback: NavigateInterface) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var matchesListData: ArrayList<MatchesListData> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -16,7 +17,7 @@ class MatchesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class MatchesListViewHolder(private val binding: MatchesLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: MatchesListData) {
+        fun bind(data: MatchesListData, callback: NavigateInterface, position: Int) {
             binding.teamA.text = data.teamA
             binding.teamB.text = data.teamB
             binding.dateTimeText.text = data.dateTime
@@ -33,6 +34,11 @@ class MatchesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 "new zealand" -> binding.teamBImage.setImageResource(R.drawable.new_zealand_logo)
                 "south africa" -> binding.teamBImage.setImageResource(R.drawable.south_africa_logo)
             }
+
+            binding.materialCardView.setOnClickListener {
+                callback.navigate(position)
+            }
+
         }
 
         companion object {
@@ -52,7 +58,7 @@ class MatchesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = matchesListData[position]
         holder as MatchesListViewHolder
-        holder.bind(data)
+        holder.bind(data, callback,position)
     }
 
     override fun getItemCount(): Int {
@@ -63,5 +69,9 @@ class MatchesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         matchesListData = ArrayList()
         matchesListData = data
         notifyDataSetChanged()
+    }
+
+    interface NavigateInterface {
+        fun navigate(position: Int)
     }
 }
